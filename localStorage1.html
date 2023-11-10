@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>주문 확인</title>
+    <link href="main.css" rel="stylesheet" />
+</head>
+    <style>
+        #confirmBox{
+            position:relative;
+            width: 80%;
+            height: auto;
+            border:2px solid grey;
+            border-radius: 25px;
+            margin: auto;
+            text-align: center;    
+        }
+        h1 {
+            background-color: black;
+            font-size: 4em;
+            color: white;
+            text-align: center;
+        }
+        section h1 {
+            margin-top: 20px;
+            background-color: black;
+            font-size: 4em;
+            color: white;
+            text-align: center;
+        }
+        #popTotal{
+            margin-top: 10px;
+            font-size: 2em;
+            font-weight: bold;
+            z-index: 999;
+        }
+        .yesOrNo{
+            display: inline-block;
+            width: 200px;
+            height: 100px;
+            margin : 30px auto;
+            font-size: 2em;
+            font-weight: bold;
+            border: 1px solid black;
+            border-radius: 30px;
+            background-color: red;
+        }
+        .yesOrNo:hover{
+            color: yellow;
+        }
+
+    </style>
+<body>
+    <header>
+        <h1>주문을 확인해 주세요</h1>
+    </header>
+    <div id="cofirmContainer">
+        <section id="confirmBox">
+            <p id="popTotal"></p>
+                <div id="container">
+                    <section id="menus">
+                        <div id="donkostuBtn">
+                            <h2>돈코츠 라멘</h2>
+                            <h3>6000원</h3>
+                        </div>
+                        <div id="shoyuBtn">
+                            <h2>쇼유 라멘</h2>
+                            <h3>6500원</h3>
+                        </div>
+                        <div id="shioBtn">
+                            <h2>시오 라멘</h2>
+                            <h3>7000원</h3>
+                        </div>
+                        <div id="misoBtn">
+                            <h2>미소 라멘</h2>
+                            <h3>6900원</h3>
+                        </div>
+                        <div id="guokaiBtn">
+                            <h2>교카이 라멘</h2>
+                            <h3>8000원</h3>
+                        </div>
+                        <div id="greenOnionBtn">
+                            <h2>파 추가</h2>
+                            <h3>500원</h3>
+                        </div>
+                        <div id="chashuBtn">
+                            <h2>차슈</h2>
+                            <h3>3000원</h3>
+                        </div>
+                        <div id="azitamagoBtn">
+                            <h2>아지타마고</h2>
+                            <h3>1500원</h3>
+                        </div>
+                        <div id="seaweedBtn">
+                            <h2>김 추가</h2>
+                            <h3>700원</h3>
+                        </div>
+                        <div id="onionBtn">
+                            <h2>마늘 추가</h2>
+                            <h3>1000원</h3>
+                        </div>
+                    </section>
+                </div>
+           
+       
+            <button class="yesOrNo" onclick="closeWindow()">취소</button>
+            <button class="yesOrNo" style="background-color: blue;" onclick="confirmOrder()">결제</button>
+        </section>
+    </div>
+
+</body>
+<script>
+
+    a = document.querySelector("#container");
+    a.children = document.querySelector("#menus");
+
+    function setTotal(){
+        let popTotal = localStorage.getItem('total')
+        const $popTotal = document.querySelector('#popTotal')
+        $popTotal.textContent = `${popTotal}`
+    }
+   
+    function setMenu(){
+        localStorage.getItem('메인메뉴')
+        localStorage.getItem('토핑메뉴')
+
+        if(localStorage.getItem('메인메뉴') === '돈코츠 라멘'){
+            document.getElementById("donkostuBtn").style.display = 'flex';
+        } else if(localStorage.getItem('메인메뉴') === '쇼유 라멘'){
+            document.getElementById("shoyuBtn").style.display = 'flex';
+        } else if(localStorage.getItem('메인메뉴') === '시오 라멘'){
+            document.getElementById("shioBtn").style.display = 'flex';
+        } else if(localStorage.getItem('메인메뉴') === '미소 라멘'){
+            document.getElementById("misoBtn").style.display = 'flex';
+        } else if(localStorage.getItem('메인메뉴') === '교카이 라멘'){
+            document.getElementById("guokaiBtn").style.display = 'flex';
+        }
+
+        if(localStorage.getItem('토핑메뉴') === '파'){
+            document.getElementById("greenOnionBtn").style.display = 'flex';
+        } else if(localStorage.getItem('토핑메뉴') === '차슈'){
+            document.getElementById("chashuBtn").style.display = 'flex';
+        } else if(localStorage.getItem('토핑메뉴') === '아지타마고'){
+            document.getElementById("azitamagoBtn").style.display = 'flex';
+        } else if(localStorage.getItem('토핑메뉴') === '김'){
+            document.getElementById("seaweedBtn").style.display = 'flex';
+        } else if(localStorage.getItem('토핑메뉴') === '마늘'){
+            document.getElementById("onionBtn").style.display = 'flex';
+        }
+    }
+
+    function confirmOrder(){
+        alert('주문이 완료되었습니다. 확인 버튼을 누르시면 3초 후 최초 화면으로 돌아갑니다.')
+        setTimeout(()=> closeWindow(), 3000)    
+    }
+
+    window.onload = function(){
+        setTotal();
+        for(i =0; i<10; i++){
+            a.children[0].children[i].style.display = 'none';
+        };
+        setMenu();
+    };
+
+    function closeWindow() {
+        window.opener.parent.location.reload(true);
+        window.close();  
+    }  
+
+</script>
+</html>

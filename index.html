@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OO라멘</title>
+    <link href="main.css" rel="stylesheet" />
+</head>
+    <style>
+    </style>
+<body>
+    <header>
+        <h1><p>어서오세요</p></h1>
+    </header>
+    <div id="container">
+        <section id="menus">
+            <div id="donkostuBtn">
+                <h2>돈코츠 라멘</h2>
+                <h3>6000원</h3>
+            </div>
+            <div id="shoyuBtn">
+                <h2>쇼유 라멘</h2>
+                <h3>6500원</h3>
+            </div>
+            <div id="shioBtn">
+                <h2>시오 라멘</h2>
+                <h3>7000원</h3>
+            </div>
+            <div id="misoBtn">
+                <h2>미소 라멘</h2>
+                <h3>6900원</h3>
+            </div>
+            <div id="guokaiBtn">
+                <h2>교카이 라멘</h2>
+                <h3>8000원</h3>
+            </div>
+            <button id="next" class="navyBtn" disabled>토핑</button>
+        </section>
+    </div>
+
+    <div id="container2">
+        <section id="menus">
+            <div id="greenOnionBtn">
+                <h2>파 추가</h2>
+                <h3>500원</h3>
+            </div>
+            <div id="chashuBtn">
+                <h2>차슈</h2>
+                <h3>3000원</h3>
+            </div>
+            <div id="azitamagoBtn">
+                <h2>아지타마고</h2>
+                <h3>1500원</h3>
+            </div>
+            <div id="seaweedBtn">
+                <h2>김 추가</h2>
+                <h3>700원</h3>
+            </div>
+            <div id="onionBtn">
+                <h2>마늘 추가</h2>
+                <h3>1000원</h3>
+            </div>
+            <button id="next">토핑</button>
+            <button id="back">메인</button>
+        </section>
+    </div>
+
+    <section id="cart">
+        <div id="orderList">
+            <div>
+                <p id=list></p>
+            </div>
+            <div>
+                <p id=list2></p>
+            </div>
+            <div>
+                <p id=total></p>
+            </div>
+
+        </div>
+    </section>
+    <button id="order" onclick="orderConfirm()">주문</button>
+
+    <footer>
+    </footer>
+
+    <script>
+
+        // //display 감추기
+        document.getElementById("container2").style.display = 'none';
+
+        // 메뉴 객체
+        const menu = {
+            menuName : ['돈코츠 라멘', '쇼유 라멘', '시오 라멘', '미소 라멘', '교카이 라멘'],
+            mainPrice : [6000, 6500, 7000, 6900, 8000],
+            toffingName : ['파', '차슈', '아지타마고', '김', '마늘'],
+            toffingPrice : [500, 3000, 1500, 700, 1000]
+        }
+
+        // 글로벌 변수
+        let mainPrice = 0;
+        let toffingPrice = 0;
+        let total = mainPrice + toffingPrice;
+        // let total = 0;
+
+        const imgName = ['donkostuImg', 'shoyuImg', 'shioImg', 'misoImg', 'guokaiImg', 'greenOnionImg', 'chashuImg', 'azitamagoImg', 'seaweedImg', 'onionImg'];
+        const rootUrl = 'http://127.0.0.1:5500/javascript/miniProject/';
+        const imgUrl = [new URL(rootUrl+'img/image0.jpg'), new URL(rootUrl+'img/image1.jpg'), new URL(rootUrl+'img/image2.jpg'), new URL(rootUrl+'img/image3.jpg'), new URL(rootUrl+'img/image4.jpg'), new URL(rootUrl+'img/img0.jpg'), new URL(rootUrl+'img/img1.jpg'), new URL(rootUrl+'img/img2.jpg'), new URL(rootUrl+'img/img3.jpg'), new URL(rootUrl+'img/img4.jpg')];
+        const Menubtn = [donkostuBtn, shoyuBtn, shioBtn, misoBtn, guokaiBtn, greenOnionBtn, chashuBtn, azitamagoBtn, seaweedBtn, onionBtn]
+
+        // console.log(toffing[2].toffingPrice);
+
+        const $donkostuBtn = document.querySelector('#donkostuBtn')
+        const $shoyuBtn = document.querySelector('#shoyuBtn')
+        const $shioBtn = document.querySelector('#shioBtn')
+        const $misoBtn = document.querySelector('#misoBtn')
+        const $guokaiBtn = document.querySelector('#guokaiBtn')
+        const $cartBtn = document.querySelector('#cartBtn')
+
+        const $greenOnionBtn = document.querySelector('#greenOnionBtn')
+        const $chashuBtn = document.querySelector('#chashuBtn')
+        const $azitamagoBtn = document.querySelector('#azitamagoBtn')
+        const $seaweedBtn = document.querySelector('#seaweedBtn')
+        const $onionBtn = document.querySelector('#onionBtn')
+
+        const $list = document.querySelector('#list')
+        const $list2 = document.querySelector('#list2')
+        const $total = document.querySelector('#total')
+        const $order = document.querySelector('#order')
+        const $next = document.querySelector('#next')
+        const $back = document.querySelector('#back')
+
+        const clickButton = (event) =>{
+            if(event.target.id === 'donkostuBtn' || event.target.textContent === '돈코츠 라멘' || event.target.textContent === '6000원') {
+                localStorage.removeItem('메인메뉴');
+                localStorage.removeItem('메인가격');
+                // localStorage.removeItem('토핑메뉴');
+                // localStorage.removeItem('토핑가격');
+                $list.textContent = `${menu.menuName[0]} : ${menu.mainPrice[0]}원`
+                mainPrice = 6000;
+                let total = mainPrice + toffingPrice;
+                $total.textContent = `결제 금액 : ${total}원`
+                localStorage.setItem('메인메뉴', menu.menuName[0]);
+                localStorage.setItem('메인가격', menu.mainPrice[0]);
+                const target = document.getElementById('next');
+                target.disabled = false;
+
+            } else if(event.target.id === 'shoyuBtn' || event.target.textContent === '쇼유 라멘' || event.target.textContent === '6500원') {
+                localStorage.removeItem('메인메뉴');
+                localStorage.removeItem('메인가격');
+                // localStorage.removeItem('토핑메뉴');
+                // localStorage.removeItem('토핑가격');
+                $list.textContent = `${menu.menuName[1]} : ${menu.mainPrice[1]}원`
+                mainPrice = 6500;
+                let total = mainPrice + toffingPrice;
+                $total.textContent = `결제 금액 : ${total}원`
+                localStorage.setItem('메인메뉴', menu.menuName[1]);
+                localStorage.setItem('메인가격', menu.mainPrice[1]);
+                const target = document.getElementById('next');
+                target.disabled = false;
+               
+            } else if(event.target.id === 'shioBtn' || event.target.textContent === '시오 라멘' || event.target.textContent === '7000원') {
+                localStorage.removeItem('메인메뉴');
+                localStorage.removeItem('메인가격');
+                // localStorage.removeItem('토핑메뉴');
+                // localStorage.removeItem('토핑가격');
+                $list.textContent = `${menu.menuName[2]} : ${menu.mainPrice[2]}원`
+                mainPrice = 7000;
+                let total = mainPrice + toffingPrice;
+                $total.textContent = `결제 금액 : ${total}원`
+                localStorage.setItem('메인메뉴', menu.menuName[2]);
+                localStorage.setItem('메인가격', menu.mainPrice[2]);
+                const target = document.getElementById('next');
+                target.disabled = false;
+
+            } else if(event.target.id === 'misoBtn' || event.target.textContent === '미소 라멘' || event.target.textContent === '6900원') {
+                localStorage.removeItem('메인메뉴');
+                localStorage.removeItem('메인가격');
+                // localStorage.removeItem('토핑메뉴');
+                // localStorage.removeItem('토핑가격');
+                $list.textContent = `${menu.menuName[3]} : ${menu.mainPrice[3]}원`
+                mainPrice = 6900;
+                let total = mainPrice + toffingPrice;
+                $total.textContent = `결제 금액 : ${total}원`
+                localStorage.setItem('메인메뉴', menu.menuName[3]);
+                localStorage.setItem('메인가격', menu.mainPrice[3]);
+                const target = document.getElementById('next');
+                target.disabled = false;
+
+            } else if(event.target.id === 'guokaiBtn' || event.target.textContent === '교카이 라멘' || event.target.textContent === '8000원') {
+                localStorage.removeItem('메인메뉴');
+                localStorage.removeItem('메인가격');
+                // localStorage.removeItem('토핑메뉴');
+                // localStorage.removeItem('토핑가격');
+                $list.textContent = `${menu.menuName[4]} : ${menu.mainPrice[4]}원`
+                mainPrice = 8000;
+                let total = mainPrice + toffingPrice;
+                $total.textContent = `결제 금액 : ${total}원`
+                localStorage.setItem('메인메뉴', menu.menuName[4]);
+                localStorage.setItem('메인가격', menu.mainPrice[4]);
+                const target = document.getElementById('next');
+                target.disabled = false;
+            }
+        }
+
+        const clickToffing = (event) =>{
+                toffingPrice = 0;
+            if(event.target.id === 'greenOnionBtn' || event.target.textContent === '파 추가' || event.target.textContent === '500원') {
+                localStorage.removeItem('토핑메뉴');
+                localStorage.removeItem('토핑가격');
+                $list2.textContent = `${menu.toffingName[0]} : ${menu.toffingPrice[0]}원`
+                toffingPrice = 500;
+                let total = mainPrice + toffingPrice;
+                $total.textContent = `결제 금액 : ${total}원`
+                localStorage.setItem('토핑메뉴', menu.toffingName[0]);
+                localStorage.setItem('토핑가격', menu.toffingPrice[0]);
+
+            } else if(event.target.id === 'chashuBtn' || event.target.textContent === '차슈' || event.target.textContent === '3000원') {
+                localStorage.removeItem('토핑메뉴');
+                localStorage.removeItem('토핑가격');
+                $list2.textContent = `${menu.toffingName[1]} : ${menu.toffingPrice[1]}원`
+                toffingPrice = 3000;
+                let total = mainPrice + toffingPrice;
+                $total.textContent = `결제 금액 : ${total}원`
+                localStorage.setItem('토핑메뉴', menu.toffingName[1]);
+                localStorage.setItem('토핑가격', menu.toffingPrice[1]);
+
+            } else if(event.target.id === 'azitamagoBtn' || event.target.textContent === '아지타마고' || event.target.textContent === '1500원') {
+                localStorage.removeItem('토핑메뉴');
+                localStorage.removeItem('토핑가격');
+                $list2.textContent = `${menu.toffingName[2]} : ${menu.toffingPrice[2]}원`
+                toffingPrice = 1500;
+                let total = mainPrice + toffingPrice;
+                $total.textContent = `결제 금액 : ${total}원`
+                localStorage.setItem('토핑메뉴', menu.toffingName[2]);
+                localStorage.setItem('토핑가격', menu.toffingPrice[2]);
+
+            } else if(event.target.id === 'seaweedBtn' || event.target.textContent === '김 추가' || event.target.textContent === '700원') {
+                localStorage.removeItem('토핑메뉴');
+                localStorage.removeItem('토핑가격');
+                $list2.textContent = `${menu.toffingName[3]} : ${menu.toffingPrice[3]}원`
+                toffingPrice = 700;
+                let total = mainPrice + toffingPrice;
+                $total.textContent = `결제 금액 : ${total}원`
+                localStorage.setItem('토핑메뉴', menu.toffingName[3]);
+                localStorage.setItem('토핑가격', menu.toffingPrice[3]);
+
+            } else if(event.target.id === 'onionBtn' || event.target.textContent === '마늘 추가' || event.target.textContent === '1000원') {
+                localStorage.removeItem('토핑메뉴');
+                localStorage.removeItem('토핑가격');
+                $list2.textContent = `${menu.toffingName[4]} : ${menu.toffingPrice[4]}원`
+                toffingPrice = 1000;
+                let total = mainPrice + toffingPrice;
+                $total.textContent = `결제 금액 : ${total}원`
+                localStorage.setItem('토핑메뉴', menu.toffingName[4]);
+                localStorage.setItem('토핑가격', menu.toffingPrice[4]);
+            }
+        }
+       
+        // Show and Hide
+        const nextButton = (event) => {
+            document.getElementById("container").style.display = 'none';
+            document.getElementById("container2").style.display = 'block';        
+        }
+
+        const backButton = (event) => {
+            document.getElementById("container").style.display = 'block';
+            document.getElementById("container2").style.display = 'none';        
+        }
+
+        $donkostuBtn.addEventListener('click', clickButton);
+        $shoyuBtn.addEventListener('click', clickButton);
+        $shioBtn.addEventListener('click', clickButton);
+        $misoBtn.addEventListener('click', clickButton);
+        $guokaiBtn.addEventListener('click', clickButton);
+
+        $greenOnionBtn.addEventListener('click', clickToffing);
+        $chashuBtn.addEventListener('click', clickToffing);
+        $azitamagoBtn.addEventListener('click', clickToffing);
+        $seaweedBtn.addEventListener('click', clickToffing);
+        $onionBtn.addEventListener('click', clickToffing);
+
+        $next.addEventListener('click', nextButton);
+        $back.addEventListener('click', backButton);
+
+        function orderConfirm(){
+            let $total = document.querySelector('#total');
+            let total = $total.textContent;
+
+            localStorage.setItem('total', total);
+            localStorage.setItem('menu', menu);
+
+            for(i=0; i < 10; i++){
+                localStorage.setItem(imgName[i], imgUrl[i])
+            }
+
+            let option = "width = 1500, height = 1200, top = 100, left = 200"
+            window.open('localStorage1.html',"주문 확인", "_blank", option);
+        }
+
+    </script>
+</body>
+</html>
