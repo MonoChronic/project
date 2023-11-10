@@ -252,3 +252,13 @@ header h1 p{
     background:#fff;
     z-index: 1000;
 }
+@media screen and (max-width: 1440px) {
+    #orderList > div > p {
+        position: absolute;
+        margin: 62px 50px;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: white;
+    }    
+  }
+  
